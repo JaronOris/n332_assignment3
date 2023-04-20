@@ -1,9 +1,11 @@
 import React from "react";
+import useFirebase from "@/useHooks/useFirebase";
 
 export default function homePage() {
+  const firebase = useFirebase();
   return (
     <>
-    <h1>My Name is {process.env.NEXT_PUBLIC_MY_NAME}</h1>
+    <h1>My Name is {firebase.currentUser.displayName || '--'}</h1>
     </>
   )
 }
