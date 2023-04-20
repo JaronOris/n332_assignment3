@@ -3,7 +3,7 @@ import React from "react";
 export default function homePage() {
   return (
     <>
-    <h1>Home</h1>
+    <h1>My Name is {process.env.NEXT_PUBLIC_MY_NAME}</h1>
     </>
   )
 }
