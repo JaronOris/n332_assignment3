@@ -1,6 +1,6 @@
 import React from 'react'
 import '@/styles/globals.css'
-import useFirebase from '@/useHooks/useFirebase'
+import { useFirebase } from '@/useHooks/useFirebase'
 import Link from 'next/link';
 
 export default function App({ Component, pageProps }) {

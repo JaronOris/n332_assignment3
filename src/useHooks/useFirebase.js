@@ -1,6 +1,7 @@
 import React from "react";
 import firebase from 'firebase/compat/app';
 import 'firebase/compat/auth';
+import "firebase/compat/firestore";
 
 // For Firebase JS SDK v7.20.0 and later, measurementId is optional
 const firebaseConfig = {
@@ -13,8 +14,9 @@ const firebaseConfig = {
 const app = firebase.initializeApp(firebaseConfig);
 const auth = firebase.auth(app);
 const googleProvider = new firebase.auth.GoogleAuthProvider();
+const db = firebase.firestore(app);
 
-export default function useFirebase() {
+export function useFirebase() {
     const initialUser = { email: '', displayName: '' }
     const [currentUser, setCurrentUser] = React.useState(initialUser);
 
@@ -38,6 +40,18 @@ export default function useFirebase() {
         async logOutUser() {
             await auth.signOut();
             return{};
+        },
+        async getDesserts() {
+            const dessertSnapshot = await db.collection('Desserts').get();
+            const dessertList = [];
+            for(let dessert of dessertSnapshot.docs) {
+                const dessertData = dessert.data();
+                dessertList.push({
+                    ...dessertData,
+                    id: dessert.id,
+                });
+            }
+            return dessertList;
         }
     };
 }
