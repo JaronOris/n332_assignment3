@@ -3,6 +3,7 @@ import "@/styles/globals.css";
 import { useFirebase } from "@/useHooks/useFirebase";
 import Link from "next/link";
 import { GlobalProvider } from "@/useHooks/useGlobalValues";
+import HomeStyle from "../styles/Home.module.css";
 
 export default function App({ Component, pageProps }) {
   const initialGlobalValues = {
@@ -20,16 +21,23 @@ export default function App({ Component, pageProps }) {
   return (
     <>
       <GlobalProvider value={{ ...globalValues, update: updateGlobalValues }}>
-        <nav>
+        <nav className={HomeStyle.nav}>
           <ul>
             <li>
-              <Link href="/">Home</Link>
-            </li>
-            <li>
               {firebase.currentUser.email ? (
-                <button onClick={firebase.logOutUser}>Logout</button>
+                <button
+                  className={HomeStyle.logUser}
+                  onClick={firebase.logOutUser}
+                >
+                  Logout
+                </button>
               ) : (
-                <button onClick={firebase.loginUser}>Login</button>
+                <button
+                  className={HomeStyle.logUser}
+                  onClick={firebase.loginUser}
+                >
+                  Login
+                </button>
               )}
             </li>
           </ul>

@@ -2,6 +2,7 @@ import React, { use } from "react";
 import { useFirebase } from "@/useHooks/useFirebase";
 import Message from "@/components/Message";
 import MessageStyle from "../styles/Message.module.css";
+import HomeStyle from "../styles/Home.module.css";
 import useGlobalValues from "@/useHooks/useGlobalValues";
 
 export default function homePage() {
@@ -32,16 +33,22 @@ export default function homePage() {
 
   return (
     <>
-      <h1>My Name is {firebase.currentUser.displayName || "--"}</h1>
-      <button onClick={pullDessertsFromDb}>Show Desserts</button>
-      <ul>{dessertListComponent}</ul>
-      {error ? (
-        <>
-          <Message type="error">{error}</Message>
-        </>
-      ) : (
-        <></>
-      )}
+      <div className={HomeStyle.hero}>
+        <h1 className={HomeStyle.callout}>
+          Hey there, {firebase.currentUser.displayName || "Login"}!
+        </h1>
+        <button className={HomeStyle.loadList} onClick={pullDessertsFromDb}>
+          View Dessert List
+        </button>
+        <ul className={HomeStyle.listItems}>{dessertListComponent}</ul>
+        {error ? (
+          <>
+            <Message type="error">{error}</Message>
+          </>
+        ) : (
+          <></>
+        )}
+      </div>
     </>
   );
 }
