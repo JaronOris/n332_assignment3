@@ -1,29 +1,42 @@
-import React from 'react'
-import '@/styles/globals.css'
-import { useFirebase } from '@/useHooks/useFirebase'
-import Link from 'next/link';
+import React from "react";
+import "@/styles/globals.css";
+import { useFirebase } from "@/useHooks/useFirebase";
+import Link from "next/link";
+import { GlobalProvider } from "@/useHooks/useGlobalValues";
 
 export default function App({ Component, pageProps }) {
+  const initialGlobalValues = {
+    dessertList: [],
+    error: "",
+  };
+  const [globalValues, setGlobalValues] = React.useState(initialGlobalValues);
+
+  function updateGlobalValues(newValues) {
+    setGlobalValues({ ...globalValues, ...newValues });
+  }
+
   const firebase = useFirebase();
-  console.log(firebase.currentUser);
+
   return (
     <>
-      <nav>
-        <ul>
-          <li>
-            <Link href="/">Home</Link>
-          </li>
-          <li>
-            {firebase.currentUser.email ?(
-            <button onClick={firebase.logOutUser}>Logout</button>
-            ) : (
-            <button onClick={firebase.loginUser}>Login</button>
-            )}
-          </li>
-        </ul>
-      </nav>
+      <GlobalProvider value={{ ...globalValues, update: updateGlobalValues }}>
+        <nav>
+          <ul>
+            <li>
+              <Link href="/">Home</Link>
+            </li>
+            <li>
+              {firebase.currentUser.email ? (
+                <button onClick={firebase.logOutUser}>Logout</button>
+              ) : (
+                <button onClick={firebase.loginUser}>Login</button>
+              )}
+            </li>
+          </ul>
+        </nav>
 
-      <Component {...pageProps} />
+        <Component {...pageProps} />
+      </GlobalProvider>
     </>
-  )
+  );
 }
